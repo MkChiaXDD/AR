@@ -8,6 +8,10 @@ public class TapShooter : MonoBehaviour
     public GameObject bulletPrefab;
     public float bulletSpeed = 5f;
 
+    [Header("Fire Settings")]
+    public float fireCooldownMax = 0.5f; // time between shots
+    private float fireCooldown = 0f;
+
     private int tapCount;
 
     private void Start()
@@ -18,10 +22,21 @@ public class TapShooter : MonoBehaviour
 
     void Update()
     {
+        // decrease cooldown timer
+        if (fireCooldown > 0f)
+            fireCooldown -= Time.deltaTime;
+
         if (Input.touchCount == 0) return;
 
         Touch touch = Input.GetTouch(0);
         if (touch.phase != TouchPhase.Began) return;
+
+        // if still cooling down, DO NOT shoot
+        if (fireCooldown > 0f)
+            return;
+
+        // reset cooldown
+        fireCooldown = fireCooldownMax;
 
         tapCount++;
         if (tapCountText != null)
@@ -38,14 +53,14 @@ public class TapShooter : MonoBehaviour
             return;
         }
 
-        // spawn bullet at camera position & rotation
+        // spawn bullet at camera
         GameObject bullet = Instantiate(
             bulletPrefab,
             arCamera.transform.position,
             arCamera.transform.rotation
         );
 
-        // add forward velocity
+        // push bullet forward
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
         {

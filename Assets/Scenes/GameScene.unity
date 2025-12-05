@@ -1535,6 +1535,7 @@ MonoBehaviour:
   arCamera: {fileID: 675799451}
   bulletPrefab: {fileID: 8889297156337617821, guid: 26b1350e1c4870e46b854d490fa8252b, type: 3}
   bulletSpeed: 10
+  fireCooldownMax: 1
 --- !u!1 &680269971
 GameObject:
   m_ObjectHideFlags: 0
