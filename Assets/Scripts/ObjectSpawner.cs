@@ -3,11 +3,12 @@ using UnityEngine.XR.ARFoundation;
 
 public class ObjectSpawner : MonoBehaviour
 {
-    public GameObject objectToSpawn;   // this is your defense base prefab
+    public GameObject basePrefab;      // your defense base
+    public GameObject turretPrefab;    // turret you want to place
     private PlacementMarker placement;
 
-    private GameObject spawnedObject;
-    private bool hasSpawned = false;
+    private bool basePlaced = false;
+    private bool placingTurret = false;
 
     void Start()
     {
@@ -16,22 +17,50 @@ public class ObjectSpawner : MonoBehaviour
 
     void Update()
     {
-        if (hasSpawned) return;
+        if (Input.touchCount == 0) return;
+        if (Input.touches[0].phase != TouchPhase.Began) return;
 
-        if (Input.touchCount > 0 && Input.touches[0].phase == TouchPhase.Began)
+        // If base is not placed yet: FIRST TAP places base
+        if (!basePlaced)
         {
-            if (placement == null) return;
-
-            spawnedObject = Instantiate(objectToSpawn, placement.transform.position, placement.transform.rotation);
-            placement.DisableMarker();
-            FindAnyObjectByType<ARPlaneManager>().enabled = false;
-            Base baseScript = spawnedObject.GetComponent<Base>();
-            hasSpawned = true;
-
-            if (GameManager.Instance != null)
-            {
-                GameManager.Instance.SetDefenseBase(spawnedObject.transform, baseScript);
-            }
+            PlaceBase();
+            return;
         }
+
+        // If we are in turret placement mode
+        if (placingTurret)
+        {
+            PlaceTurret();
+            placingTurret = false;  // exit turret placing mode
+        }
+    }
+
+    // Call this from your UI Button!
+    public void EnableTurretPlacement()
+    {
+        placingTurret = true;
+    }
+
+    private void PlaceBase()
+    {
+        if (placement == null) return;
+
+        GameObject baseObj = Instantiate(basePrefab, placement.transform.position, placement.transform.rotation);
+
+        //planeManager.enabled = false; // if you disabled planes already, fine
+        Base baseScript = baseObj.GetComponent<Base>();
+        basePlaced = true;
+
+        if (GameManager.Instance != null)
+        {
+            GameManager.Instance.SetDefenseBase(baseObj.transform, baseScript);
+        }
+    }
+
+    private void PlaceTurret()
+    {
+        if (placement == null) return;
+
+        Instantiate(turretPrefab, placement.transform.position, placement.transform.rotation);
     }
 }
