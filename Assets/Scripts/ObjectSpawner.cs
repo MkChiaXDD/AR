@@ -23,6 +23,10 @@ public class ObjectSpawner : MonoBehaviour
         if (Input.touchCount == 0) return;
         if (Input.touches[0].phase != TouchPhase.Began) return;
 
+        if (placement == null) return;
+
+        if (!placement.HasValidPosition) return;
+
         // If base is not placed yet: FIRST TAP places base
         if (!basePlaced)
         {
