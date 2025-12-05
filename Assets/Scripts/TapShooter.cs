@@ -86,7 +86,7 @@ public class TapShooter : MonoBehaviour
 
     public void UpgradeFireRate()
     {
-        if (gameMgr.GetGoldAmount() >= fireRateUpgradeCost) return;
+        if (gameMgr.GetGoldAmount() < fireRateUpgradeCost) return;
 
         fireRate++;
         gameMgr.UseGold(fireRateUpgradeCost);
