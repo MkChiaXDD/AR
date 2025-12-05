@@ -1033,6 +1033,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BalloonPrefab: {fileID: 4593686063630798981, guid: af8ca9748d6472e42a3133878dbe2c19, type: 3}
+  spawnRadius: 0.7
+  timeBetweenSpawns: 1
+  timeBetweenRounds: 3
+  rounds:
+  - round: 1
+    balloonCount: 5
+    balloonSpeed: 1
+  - round: 2
+    balloonCount: 5
+    balloonSpeed: 2
+  maxLives: 3
 --- !u!4 &1701512717
 Transform:
   m_ObjectHideFlags: 0
