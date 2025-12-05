@@ -9,6 +9,8 @@ public class TapShooter : MonoBehaviour
         Touch touch = Input.GetTouch(0);
         if (touch.phase != TouchPhase.Began) return;
 
+
+
         Ray ray = Camera.main.ScreenPointToRay(touch.position);
 
         if (Physics.Raycast(ray, out RaycastHit hit))

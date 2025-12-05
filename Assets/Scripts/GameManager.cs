@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 [System.Serializable]
 public class Round
@@ -32,6 +33,9 @@ public class GameManager : MonoBehaviour
     private int lives;
     private int balloonsAlive = 0;
     private bool isSpawning = false;
+
+    public TMP_Text roundText;
+    public TMP_Text balloonCountText;
 
     private void Awake()
     {
@@ -87,6 +91,8 @@ public class GameManager : MonoBehaviour
             return;
         }
 
+        UpdateRoundText(rounds[currentRoundIndex].round);
+
         Debug.Log($"Starting round {rounds[currentRoundIndex].round}");
         StartCoroutine(SpawnRoundRoutine(rounds[currentRoundIndex]));
     }
@@ -100,6 +106,8 @@ public class GameManager : MonoBehaviour
 
         isSpawning = true;
         balloonsAlive = roundData.balloonCount;
+
+        UpdateBalloonCountText(balloonsAlive);
 
         for (int i = 0; i < roundData.balloonCount; i++)
         {
@@ -145,6 +153,9 @@ public class GameManager : MonoBehaviour
     {
         balloonsAlive--;
         lives--;
+
+        UpdateBalloonCountText(balloonsAlive);
+
         FindAnyObjectByType<Base>()?.TakeDamage(1);
 
         if (lives <= 0)
@@ -157,6 +168,9 @@ public class GameManager : MonoBehaviour
     public void OnBalloonPopped()
     {
         balloonsAlive--;
+
+        UpdateBalloonCountText(balloonsAlive);
+
         Debug.Log("Balloon popped! Remaining in this round: " + balloonsAlive);
     }
 
@@ -171,5 +185,15 @@ public class GameManager : MonoBehaviour
         Debug.Log("GAME OVER!");
         // TODO: show lose UI, stop game, etc.
         
+    }
+
+    private void UpdateRoundText(int round)
+    {
+        roundText.text = "Round: " + round;
+    }
+
+    private void UpdateBalloonCountText(int count)
+    {
+        balloonCountText.text = "Balloons Left: " + count;
     }
 }
