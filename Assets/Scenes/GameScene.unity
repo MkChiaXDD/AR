@@ -3185,13 +3185,13 @@ MonoBehaviour:
     balloonSpeed: 0.2
   - round: 3
     balloonCount: 5
-    balloonSpeed: 0.4
+    balloonSpeed: 0.3
   - round: 4
     balloonCount: 6
-    balloonSpeed: 0.6
+    balloonSpeed: 0.4
   - round: 5
     balloonCount: 8
-    balloonSpeed: 0.8
+    balloonSpeed: 0.4
   maxLives: 3
   roundText: {fileID: 1939438119}
   balloonCountText: {fileID: 1322853361}
