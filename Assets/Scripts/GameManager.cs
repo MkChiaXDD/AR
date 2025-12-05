@@ -58,6 +58,9 @@ public class GameManager : MonoBehaviour
         lives = maxLives;
 
         tapToShootText.SetActive(false);
+        winText.SetActive(false);
+        loseText.SetActive(false);
+        restartBtn.SetActive(false);
     }
 
     // Called by ObjectSpawner AFTER the base is spawned
@@ -69,9 +72,6 @@ public class GameManager : MonoBehaviour
         StartGame();
         preStartText.SetActive(false);
         tapToShootText.SetActive(true);
-        winText.SetActive(false);
-        loseText.SetActive(false);
-        restartBtn.SetActive(false);
     }
 
     public bool HasDefenseBase()
