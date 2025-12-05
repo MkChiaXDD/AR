@@ -73,7 +73,7 @@ public class GameManager : MonoBehaviour
         // ===== PRE-GAME STATE =====
         // Show intro panel, hide tap-to-place until Start Scanning
         if (introPanel != null) introPanel.SetActive(true);
-        if (tapToPlaceText != null) tapToPlaceText.SetActive(false);
+        if (tapToPlaceText != null) tapToPlaceText.SetActive(true);
 
         // This was your old hint - you can keep it off until later or just not use it
         if (preStartText != null) preStartText.SetActive(false);
@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour
         if (introPanel != null) introPanel.SetActive(false);
 
         // Show text telling player to move phone & place base
-        if (tapToPlaceText != null) tapToPlaceText.SetActive(true);
+        if (tapToPlaceText != null) tapToPlaceText.SetActive(false);
 
         // If you want to reuse preStartText as extra hint, you can:
         if (preStartText != null) preStartText.SetActive(true);
@@ -122,7 +122,6 @@ public class GameManager : MonoBehaviour
         Debug.Log("Defense base set: " + baseTransform.name);
 
         // Once base is placed: stop showing "tap to place" hints
-        if (tapToPlaceText != null) tapToPlaceText.SetActive(false);
         if (preStartText != null) preStartText.SetActive(false);
 
         // Show "Tap to shoot" text
