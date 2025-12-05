@@ -7,6 +7,7 @@ public class ObjectSpawner : MonoBehaviour
     public GameObject turretPrefab;    // turret you want to place
     private PlacementMarker placement;
     public GameManager gameMgr;
+    public GameObject placeTurretText;
 
     private bool basePlaced = false;
     private bool placingTurret = false;
@@ -16,6 +17,7 @@ public class ObjectSpawner : MonoBehaviour
     void Start()
     {
         placement = FindFirstObjectByType<PlacementMarker>();
+        placeTurretText.SetActive(false);
     }
 
     void Update()
@@ -46,7 +48,9 @@ public class ObjectSpawner : MonoBehaviour
     // Call this from your UI Button!
     public void EnableTurretPlacement()
     {
+        if (gameMgr.GetGoldAmount() < turretPrice) return;
         placingTurret = true;
+        placeTurretText.SetActive(true);
     }
 
     private void PlaceBase()
@@ -70,5 +74,6 @@ public class ObjectSpawner : MonoBehaviour
         if (placement == null) return;
 
         Instantiate(turretPrefab, placement.transform.position, placement.transform.rotation);
+        placeTurretText.SetActive(false);
     }
 }

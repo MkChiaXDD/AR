@@ -65,17 +65,16 @@ public class TapShooter : MonoBehaviour
 
     private void ShootBullet()
     {
-        if (bulletPrefab == null)
+        if (BulletPool.Instance == null)
         {
-            Debug.LogWarning("No bullet prefab assigned!");
+            Debug.LogWarning("No BulletPool in scene!");
             return;
         }
 
-        GameObject bullet = Instantiate(
-            bulletPrefab,
-            arCamera.transform.position,
-            arCamera.transform.rotation
-        );
+        Vector3 spawnPos = arCamera.transform.position;
+        Quaternion spawnRot = arCamera.transform.rotation;
+
+        GameObject bullet = BulletPool.Instance.GetBullet(spawnPos, spawnRot);
 
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
@@ -83,6 +82,7 @@ public class TapShooter : MonoBehaviour
             rb.linearVelocity = arCamera.transform.forward * bulletSpeed;
         }
     }
+
 
     public void UpgradeFireRate()
     {

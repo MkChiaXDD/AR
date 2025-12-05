@@ -81,21 +81,26 @@ public class Turret : MonoBehaviour
 
     private void Shoot(Transform target)
     {
-        if (bulletPrefab == null || firePoint == null) return;
+        if (BulletPool.Instance == null || firePoint == null)
+        {
+            Debug.LogWarning("No BulletPool or firePoint missing!");
+            return;
+        }
 
-        // direction to target
         Vector3 dir = (target.position - firePoint.position).normalized;
 
-        // spawn bullet
-        GameObject bulletGO = Instantiate(bulletPrefab, firePoint.position, Quaternion.LookRotation(dir));
+        GameObject bulletGO = BulletPool.Instance.GetBullet(
+            firePoint.position,
+            Quaternion.LookRotation(dir)
+        );
 
-        // apply velocity
         Rigidbody rb = bulletGO.GetComponent<Rigidbody>();
         if (rb != null)
         {
             rb.linearVelocity = dir * bulletSpeed;
         }
     }
+
 
     private void OnDrawGizmosSelected()
     {

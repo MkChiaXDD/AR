@@ -2,10 +2,25 @@ using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
-    public float autoDestroyTimer;
-    private void Start()
+    public float autoDestroyTimer = 3f;
+    private float lifeTimer;
+
+    private void OnEnable()
     {
-        Destroy(gameObject, autoDestroyTimer);
+        lifeTimer = autoDestroyTimer;
+    }
+
+    private void Update()
+    {
+        lifeTimer -= Time.deltaTime;
+        if (lifeTimer <= 0f)
+        {
+            // Return to pool instead of destroying
+            if (BulletPool.Instance != null)
+                BulletPool.Instance.ReturnBullet(gameObject);
+            else
+                gameObject.SetActive(false);
+        }
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -17,7 +32,11 @@ public class Bullet : MonoBehaviour
             {
                 balloon.OnHit(1);
             }
-            Destroy(gameObject);
         }
+
+        if (BulletPool.Instance != null)
+            BulletPool.Instance.ReturnBullet(gameObject);
+        else
+            gameObject.SetActive(false);
     }
 }
