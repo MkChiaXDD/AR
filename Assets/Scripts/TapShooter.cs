@@ -1,7 +1,10 @@
 using UnityEngine;
+using TMPro;
 
 public class TapShooter : MonoBehaviour
 {
+    public TMP_Text tapCountText;
+    private int tapCount;
     void Update()
     {
         if (Input.touchCount == 0) return;
@@ -9,7 +12,8 @@ public class TapShooter : MonoBehaviour
         Touch touch = Input.GetTouch(0);
         if (touch.phase != TouchPhase.Began) return;
 
-
+        tapCount++;
+        tapCountText.text = "Tap Count: " + tapCount;
 
         Ray ray = Camera.main.ScreenPointToRay(touch.position);
 
