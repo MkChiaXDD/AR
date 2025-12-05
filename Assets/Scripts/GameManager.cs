@@ -46,9 +46,10 @@ public class GameManager : MonoBehaviour
     }
 
     // Called by ObjectSpawner AFTER the base is spawned
-    public void SetDefenseBase(Transform baseTransform)
+    public void SetDefenseBase(Transform baseTransform, Base baseScript)
     {
         DefenseBase = baseTransform;
+        baseScript.Init(maxLives);
         Debug.Log("Defense base set: " + baseTransform.name);
         StartGame();
     }
@@ -144,7 +145,7 @@ public class GameManager : MonoBehaviour
     {
         balloonsAlive--;
         lives--;
-
+        FindAnyObjectByType<Base>()?.TakeDamage(1);
         Debug.Log($"Balloon leaked! Lives left: {lives}");
 
         if (lives <= 0)
@@ -170,6 +171,6 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("GAME OVER!");
         // TODO: show lose UI, stop game, etc.
-        Application.Quit();
+        
     }
 }
