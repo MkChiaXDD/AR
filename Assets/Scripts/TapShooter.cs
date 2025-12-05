@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using Unity.IO.LowLevel.Unsafe;
 
 public class TapShooter : MonoBehaviour
 {
@@ -9,34 +10,50 @@ public class TapShooter : MonoBehaviour
     public float bulletSpeed = 5f;
 
     [Header("Fire Settings")]
-    public float fireCooldownMax = 0.5f; // time between shots
+    public int fireRate = 1;      // bullets per second
     private float fireCooldown = 0f;
+    public TMP_Text fireRateText;
+    public int fireRateUpgradeCost = 5;
 
     private int tapCount;
+    public GameManager gameMgr;
 
     private void Start()
     {
         if (arCamera == null)
             arCamera = Camera.main;
+
+        if (fireRate < 1)
+            fireRate = 1; // safety
     }
 
     void Update()
     {
-        // decrease cooldown timer
+        // countdown cooldown timer
         if (fireCooldown > 0f)
             fireCooldown -= Time.deltaTime;
 
-        if (Input.touchCount == 0) return;
+        // if no touches, don't shoot
+        if (Input.touchCount == 0)
+            return;
 
         Touch touch = Input.GetTouch(0);
-        if (touch.phase != TouchPhase.Began) return;
 
-        // if still cooling down, DO NOT shoot
+        // we only care if the finger is held OR just touched
+        bool isHolding =
+            touch.phase == TouchPhase.Began ||
+            touch.phase == TouchPhase.Stationary ||
+            touch.phase == TouchPhase.Moved;
+
+        if (!isHolding)
+            return;
+
+        // still cooling down ? cannot shoot yet
         if (fireCooldown > 0f)
             return;
 
-        // reset cooldown
-        fireCooldown = fireCooldownMax;
+        // reset cooldown BEFORE shooting
+        fireCooldown = 1f / fireRate;
 
         tapCount++;
         if (tapCountText != null)
@@ -44,6 +61,7 @@ public class TapShooter : MonoBehaviour
 
         ShootBullet();
     }
+
 
     private void ShootBullet()
     {
@@ -53,18 +71,30 @@ public class TapShooter : MonoBehaviour
             return;
         }
 
-        // spawn bullet at camera
         GameObject bullet = Instantiate(
             bulletPrefab,
             arCamera.transform.position,
             arCamera.transform.rotation
         );
 
-        // push bullet forward
         Rigidbody rb = bullet.GetComponent<Rigidbody>();
         if (rb != null)
         {
             rb.linearVelocity = arCamera.transform.forward * bulletSpeed;
         }
+    }
+
+    public void UpgradeFireRate()
+    {
+        if (gameMgr.GetGoldAmount() >= fireRateUpgradeCost) return;
+
+        fireRate++;
+        gameMgr.UseGold(fireRateUpgradeCost);
+        UpdateFireRateText(fireRate);
+    }
+
+    private void UpdateFireRateText(int fireRate)
+    {
+        fireRateText.text = "Firerate: " + fireRate;
     }
 }
