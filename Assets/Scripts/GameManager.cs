@@ -32,6 +32,7 @@ public class GameManager : MonoBehaviour
     public GameObject winText;
     public GameObject loseText;
     public GameObject restartBtn;
+    public GameObject placeTurretText;
 
     [Header("Balloon Settings")]
     public GameObject BalloonPrefab;
@@ -74,6 +75,7 @@ public class GameManager : MonoBehaviour
         // Show intro panel, hide tap-to-place until Start Scanning
         if (introPanel != null) introPanel.SetActive(true);
         if (tapToPlaceText != null) tapToPlaceText.SetActive(true);
+        placeTurretText.SetActive(false);
 
         // This was your old hint - you can keep it off until later or just not use it
         if (preStartText != null) preStartText.SetActive(false);

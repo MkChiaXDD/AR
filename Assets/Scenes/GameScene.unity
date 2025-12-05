@@ -3863,6 +3863,7 @@ MonoBehaviour:
   winText: {fileID: 680269971}
   loseText: {fileID: 890801687}
   restartBtn: {fileID: 490123064}
+  placeTurretText: {fileID: 1676051983}
   BalloonPrefab: {fileID: 4593686063630798981, guid: af8ca9748d6472e42a3133878dbe2c19, type: 3}
   spawnRadius: 5
   timeBetweenSpawns: 1
@@ -4604,7 +4605,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2094142969
 MonoBehaviour:
   m_ObjectHideFlags: 0
