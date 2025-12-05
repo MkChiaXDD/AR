@@ -4,7 +4,15 @@ using TMPro;
 public class TapShooter : MonoBehaviour
 {
     public TMP_Text tapCountText;
+    public Camera arCamera;
     private int tapCount;
+    private void Start()
+    {
+        if (arCamera == null)
+        {
+            arCamera = Camera.main;
+        }
+    }
     void Update()
     {
         if (Input.touchCount == 0) return;
@@ -13,20 +21,22 @@ public class TapShooter : MonoBehaviour
         if (touch.phase != TouchPhase.Began) return;
 
         tapCount++;
-        tapCountText.text = "Tap Count: " + tapCount;
+        if (tapCountText != null)
+            tapCountText.text = "Tap Count: " + tapCount;
 
-        Ray ray = Camera.main.ScreenPointToRay(touch.position);
+        Ray ray = arCamera.ScreenPointToRay(touch.position);
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
             Balloon balloon = hit.collider.GetComponent<Balloon>();
             if (balloon != null)
             {
-                // Tell GameManager a balloon was popped
-                GameManager.Instance.OnBalloonPopped();
-
-                Destroy(balloon.gameObject);
+                balloon.OnHit();
             }
+        }
+        else
+        {
+            Debug.Log("Raycast hit nothing");
         }
     }
 }

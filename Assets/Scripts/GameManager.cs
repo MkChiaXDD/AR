@@ -170,8 +170,6 @@ public class GameManager : MonoBehaviour
         balloonsAlive--;
 
         UpdateBalloonCountText(balloonsAlive);
-
-        Debug.Log("Balloon popped! Remaining in this round: " + balloonsAlive);
     }
 
     private void WinGame()

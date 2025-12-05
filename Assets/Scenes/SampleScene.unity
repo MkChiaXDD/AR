@@ -779,6 +779,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tapCountText: {fileID: 2011826805}
+  arCamera: {fileID: 675799451}
 --- !u!1 &809484667
 GameObject:
   m_ObjectHideFlags: 0

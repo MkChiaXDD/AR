@@ -30,4 +30,10 @@ public class Balloon : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public void OnHit()
+    {
+        GameManager.Instance.OnBalloonPopped();
+        Destroy(gameObject);
+    }
 }
