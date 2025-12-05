@@ -17,6 +17,10 @@ public class GameManager : MonoBehaviour
 
     public Transform DefenseBase { get; private set; }
 
+    [Header("UI")]
+    public GameObject preStartText;
+    public GameObject tapToShootText;
+
     [Header("Balloon Settings")]
     public GameObject BalloonPrefab;
     public float spawnRadius = 0.7f;         // how far from base to spawn
@@ -49,6 +53,8 @@ public class GameManager : MonoBehaviour
 
         Instance = this;
         lives = maxLives;
+
+        tapToShootText.SetActive(false);
     }
 
     // Called by ObjectSpawner AFTER the base is spawned
@@ -58,6 +64,8 @@ public class GameManager : MonoBehaviour
         baseScript.Init(maxLives);
         Debug.Log("Defense base set: " + baseTransform.name);
         StartGame();
+        preStartText.SetActive(false);
+        tapToShootText.SetActive(true);
     }
 
     public bool HasDefenseBase()

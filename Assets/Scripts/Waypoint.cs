@@ -6,6 +6,7 @@ public class Waypoint : MonoBehaviour
     public Image img;          // icon on UI
     public Transform target;   // balloon to follow
     public Camera arCamera;    // assign in code or use Camera.main
+    public Vector2 screenOffset = new Vector2(0, 2f);
 
     private void Awake()
     {
@@ -49,6 +50,8 @@ public class Waypoint : MonoBehaviour
         screenPos.x = Mathf.Clamp(screenPos.x, minX, maxX);
         screenPos.y = Mathf.Clamp(screenPos.y, minY, maxY);
 
-        img.transform.position = screenPos;
+        Vector2 finalPos = new Vector2(screenPos.x, screenPos.y) + screenOffset;
+
+        img.transform.position = finalPos;
     }
 }
