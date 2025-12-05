@@ -162,7 +162,7 @@ MonoBehaviour:
   headToRotate: {fileID: 3416789895751605090}
   bulletPrefab: {fileID: 8889297156337617821, guid: 26b1350e1c4870e46b854d490fa8252b, type: 3}
   firePoint: {fileID: 332107188517954895}
-  fireRate: 3
+  fireRate: 0.2
   bulletSpeed: 6
 --- !u!1 &2563827315996477456
 GameObject:
