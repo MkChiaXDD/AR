@@ -1032,6 +1032,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b658525e0643b24b8223791aa427cb6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BalloonPrefab: {fileID: 4593686063630798981, guid: af8ca9748d6472e42a3133878dbe2c19, type: 3}
 --- !u!4 &1701512717
 Transform:
   m_ObjectHideFlags: 0
