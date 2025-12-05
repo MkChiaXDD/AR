@@ -1,3 +1,4 @@
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -7,6 +8,7 @@ public class Base : MonoBehaviour
     private int currentHp;
 
     public Image hpFill;
+    public TMP_Text hpText;
 
     public void Init(int maxHp)
     {
@@ -32,6 +34,11 @@ public class Base : MonoBehaviour
         if (hpFill != null)
         {
             hpFill.fillAmount = (float)currentHp / maxHp;
+        }
+
+        if (hpText != null)
+        {
+            hpText.text = currentHp + "/" + maxHp;
         }
     }
 

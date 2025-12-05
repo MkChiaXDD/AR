@@ -22,6 +22,8 @@ public class GameManager : MonoBehaviour
     public float spawnRadius = 0.7f;         // how far from base to spawn
     public float timeBetweenSpawns = 0.8f;   // delay between balloons
     public float timeBetweenRounds = 3f;     // delay between waves
+    public GameObject waypointPrefab;
+    public Canvas waypointCanvas;
 
     [Header("Rounds")]
     public List<Round> rounds = new List<Round>();
@@ -131,7 +133,6 @@ public class GameManager : MonoBehaviour
     {
         Vector3 basePos = DefenseBase.position;
 
-        // random direction around base in XZ
         Vector2 offset2D = Random.insideUnitCircle.normalized * spawnRadius;
         Vector3 spawnPos = basePos + new Vector3(offset2D.x, 0.2f, offset2D.y);
 
@@ -145,6 +146,16 @@ public class GameManager : MonoBehaviour
         else
         {
             Debug.LogWarning("BalloonPrefab has no Balloon script attached.");
+        }
+
+        // ?? Create waypoint for this balloon
+        if (waypointPrefab != null && waypointCanvas != null)
+        {
+            GameObject wpObj = Instantiate(waypointPrefab, waypointCanvas.transform);
+            Waypoint wp = wpObj.GetComponent<Waypoint>();
+
+            wp.target = b.transform;         // follow this balloon
+            wp.arCamera = Camera.main;       // or your AR camera reference
         }
     }
 
