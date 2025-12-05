@@ -5,14 +5,17 @@ public class TapShooter : MonoBehaviour
 {
     public TMP_Text tapCountText;
     public Camera arCamera;
+    public GameObject bulletPrefab;
+    public float bulletSpeed = 5f;
+
     private int tapCount;
+
     private void Start()
     {
         if (arCamera == null)
-        {
             arCamera = Camera.main;
-        }
     }
+
     void Update()
     {
         if (Input.touchCount == 0) return;
@@ -24,19 +27,29 @@ public class TapShooter : MonoBehaviour
         if (tapCountText != null)
             tapCountText.text = "Tap Count: " + tapCount;
 
-        Ray ray = arCamera.ScreenPointToRay(touch.position);
+        ShootBullet();
+    }
 
-        if (Physics.Raycast(ray, out RaycastHit hit))
+    private void ShootBullet()
+    {
+        if (bulletPrefab == null)
         {
-            Balloon balloon = hit.collider.GetComponent<Balloon>();
-            if (balloon != null)
-            {
-                balloon.OnHit();
-            }
+            Debug.LogWarning("No bullet prefab assigned!");
+            return;
         }
-        else
+
+        // spawn bullet at camera position & rotation
+        GameObject bullet = Instantiate(
+            bulletPrefab,
+            arCamera.transform.position,
+            arCamera.transform.rotation
+        );
+
+        // add forward velocity
+        Rigidbody rb = bullet.GetComponent<Rigidbody>();
+        if (rb != null)
         {
-            Debug.Log("Raycast hit nothing");
+            rb.linearVelocity = arCamera.transform.forward * bulletSpeed;
         }
     }
 }
