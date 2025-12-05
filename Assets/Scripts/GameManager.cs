@@ -146,7 +146,6 @@ public class GameManager : MonoBehaviour
         balloonsAlive--;
         lives--;
         FindAnyObjectByType<Base>()?.TakeDamage(1);
-        Debug.Log($"Balloon leaked! Lives left: {lives}");
 
         if (lives <= 0)
         {
