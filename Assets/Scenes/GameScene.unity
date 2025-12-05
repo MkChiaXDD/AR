@@ -1886,7 +1886,7 @@ MonoBehaviour:
   bulletSpeed: 10
   fireRate: 1
   fireRateText: {fileID: 1313475081}
-  fireRateUpgradeCost: 5
+  fireRateUpgradeCost: 3
   gameMgr: {fileID: 1701512716}
 --- !u!1 &680269971
 GameObject:
@@ -4605,7 +4605,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &2094142969
 MonoBehaviour:
   m_ObjectHideFlags: 0
