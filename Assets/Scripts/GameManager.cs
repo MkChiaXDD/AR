@@ -277,7 +277,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateBalloonCountText(int count)
     {
-        balloonCountText.text = "Balloons Left: " + count;
+        balloonCountText.text = "Enemies: " + count;
     }
 
     private void UpdateGoldCountText(int count)
