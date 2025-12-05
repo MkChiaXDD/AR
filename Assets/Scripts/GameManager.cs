@@ -60,6 +60,8 @@ public class GameManager : MonoBehaviour
     public TMP_Text balloonCountText;
     public TMP_Text goldText;
 
+    public bool gameEnd;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -67,6 +69,8 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
+
+        gameEnd = false;
 
         Instance = this;
         lives = maxLives;
@@ -261,6 +265,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("YOU WIN! All rounds cleared.");
         winText.SetActive(true);
         restartBtn.SetActive(true);
+
+        gameEnd = true;
     }
 
     private void LoseGame()
@@ -268,6 +274,8 @@ public class GameManager : MonoBehaviour
         Debug.Log("GAME OVER!");
         loseText.SetActive(true);
         restartBtn.SetActive(true);
+
+        gameEnd = true;
     }
 
     private void UpdateRoundText(int round)

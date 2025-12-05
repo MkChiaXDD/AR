@@ -593,7 +593,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 1}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: -90, y: -37.055}
+  m_AnchoredPosition: {x: -90, y: -37.055054}
   m_SizeDelta: {x: 162.41278, y: 50}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &251757438
@@ -3876,16 +3876,16 @@ MonoBehaviour:
     balloonCount: 3
     balloonSpeed: 0.2
   - round: 2
-    balloonCount: 5
+    balloonCount: 4
     balloonSpeed: 0.2
   - round: 3
     balloonCount: 5
     balloonSpeed: 0.3
   - round: 4
     balloonCount: 6
-    balloonSpeed: 0.4
+    balloonSpeed: 0.3
   - round: 5
-    balloonCount: 8
+    balloonCount: 7
     balloonSpeed: 0.4
   maxLives: 3
   roundText: {fileID: 1939438119}

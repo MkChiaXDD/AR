@@ -29,6 +29,8 @@ public class TapShooter : MonoBehaviour
 
     void Update()
     {
+        if (gameMgr.gameEnd == true) return;
+
         // countdown cooldown timer
         if (fireCooldown > 0f)
             fireCooldown -= Time.deltaTime;
