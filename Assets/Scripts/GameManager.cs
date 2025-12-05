@@ -1,8 +1,8 @@
-using UnityEngine;
+﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-
+using UnityEngine.SceneManagement;
 [System.Serializable]
 public class Round
 {
@@ -20,6 +20,9 @@ public class GameManager : MonoBehaviour
     [Header("UI")]
     public GameObject preStartText;
     public GameObject tapToShootText;
+    public GameObject winText;
+    public GameObject loseText;
+    public GameObject restartBtn;
 
     [Header("Balloon Settings")]
     public GameObject BalloonPrefab;
@@ -66,6 +69,9 @@ public class GameManager : MonoBehaviour
         StartGame();
         preStartText.SetActive(false);
         tapToShootText.SetActive(true);
+        winText.SetActive(false);
+        loseText.SetActive(false);
+        restartBtn.SetActive(false);
     }
 
     public bool HasDefenseBase()
@@ -156,7 +162,7 @@ public class GameManager : MonoBehaviour
             Debug.LogWarning("BalloonPrefab has no Balloon script attached.");
         }
 
-        // ?? Create waypoint for this balloon
+        // 🔹 Create waypoint for this balloon
         if (waypointPrefab != null && waypointCanvas != null)
         {
             GameObject wpObj = Instantiate(waypointPrefab, waypointCanvas.transform);
@@ -195,13 +201,16 @@ public class GameManager : MonoBehaviour
     {
         Debug.Log("YOU WIN! All rounds cleared.");
         // TODO: show win UI, stop game, etc.
+        winText.SetActive(true);
+        restartBtn.SetActive(true);
     }
 
     private void LoseGame()
     {
         Debug.Log("GAME OVER!");
         // TODO: show lose UI, stop game, etc.
-        
+        loseText.SetActive(true);
+        restartBtn.SetActive(true);
     }
 
     private void UpdateRoundText(int round)
@@ -212,5 +221,10 @@ public class GameManager : MonoBehaviour
     private void UpdateBalloonCountText(int count)
     {
         balloonCountText.text = "Balloons Left: " + count;
+    }
+
+    public void RestartGame()
+    {
+        SceneManager.LoadScene("GameScene");
     }
 }
