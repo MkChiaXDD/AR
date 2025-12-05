@@ -30,4 +30,10 @@ public class PlacementMarker : MonoBehaviour
             visual.SetActive(false);
         }
     }
+
+    public void DisableMarker()
+    {
+        visual.SetActive(false);   // hide the marker visual
+        enabled = false;           // stop Update() from running
+    }
 }

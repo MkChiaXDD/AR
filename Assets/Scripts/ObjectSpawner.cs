@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.XR.ARFoundation;
 
 public class ObjectSpawner : MonoBehaviour
 {
@@ -22,6 +23,8 @@ public class ObjectSpawner : MonoBehaviour
             if (placement == null) return;
 
             spawnedObject = Instantiate(objectToSpawn, placement.transform.position, placement.transform.rotation);
+            placement.DisableMarker();
+            FindAnyObjectByType<ARPlaneManager>().enabled = false;
             Base baseScript = spawnedObject.GetComponent<Base>();
             hasSpawned = true;
 
