@@ -6,9 +6,12 @@ public class ObjectSpawner : MonoBehaviour
     public GameObject basePrefab;      // your defense base
     public GameObject turretPrefab;    // turret you want to place
     private PlacementMarker placement;
+    public GameManager gameMgr;
 
     private bool basePlaced = false;
     private bool placingTurret = false;
+
+    public int turretPrice = 3;
 
     void Start()
     {
@@ -28,9 +31,10 @@ public class ObjectSpawner : MonoBehaviour
         }
 
         // If we are in turret placement mode
-        if (placingTurret)
+        if (placingTurret && gameMgr.GetGoldAmount() >= turretPrice)
         {
             PlaceTurret();
+            gameMgr.UseGold(turretPrice);
             placingTurret = false;  // exit turret placing mode
         }
     }
@@ -47,7 +51,7 @@ public class ObjectSpawner : MonoBehaviour
 
         GameObject baseObj = Instantiate(basePrefab, placement.transform.position, placement.transform.rotation);
 
-        //planeManager.enabled = false; // if you disabled planes already, fine
+        FindAnyObjectByType<ARPlaneManager>().enabled = false; // if you disabled planes already, fine
         Base baseScript = baseObj.GetComponent<Base>();
         basePlaced = true;
 

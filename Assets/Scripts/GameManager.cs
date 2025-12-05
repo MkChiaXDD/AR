@@ -38,6 +38,8 @@ public class GameManager : MonoBehaviour
     [Header("Gameplay")]
     public int maxLives = 3;
 
+    private int goldCount;
+
     private int currentRoundIndex = -1;
     private int lives;
     private int balloonsAlive = 0;
@@ -45,6 +47,7 @@ public class GameManager : MonoBehaviour
 
     public TMP_Text roundText;
     public TMP_Text balloonCountText;
+    public TMP_Text goldText;
 
     private void Awake()
     {
@@ -193,7 +196,8 @@ public class GameManager : MonoBehaviour
     public void OnBalloonPopped()
     {
         balloonsAlive--;
-
+        goldCount++;
+        UpdateGoldCountText(goldCount);
         UpdateBalloonCountText(balloonsAlive);
     }
 
@@ -215,7 +219,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateRoundText(int round)
     {
-        roundText.text = "Round: " + round;
+        roundText.text = "Round: " + round + "/5";
     }
 
     private void UpdateBalloonCountText(int count)
@@ -223,8 +227,24 @@ public class GameManager : MonoBehaviour
         balloonCountText.text = "Balloons Left: " + count;
     }
 
+    private void UpdateGoldCountText(int count)
+    {
+        goldText.text = "Gold: " + count;
+    }
+
     public void RestartGame()
     {
         SceneManager.LoadScene("GameScene");
+    }
+
+    public int GetGoldAmount()
+    {
+        return goldCount;
+    }
+
+    public void UseGold(int price)
+    {
+        goldCount -= price;
+        UpdateGoldCountText(goldCount);
     }
 }
