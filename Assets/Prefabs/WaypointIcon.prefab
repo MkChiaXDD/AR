@@ -90,3 +90,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   img: {fileID: 5780796869706633462}
   target: {fileID: 0}
+  arCamera: {fileID: 0}
+  screenOffset: {x: 0, y: 10}

@@ -1854,7 +1854,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   preStartText: {fileID: 94713378}
-  tapToShootText: {fileID: 0}
+  tapToShootText: {fileID: 1451557890}
   BalloonPrefab: {fileID: 4593686063630798981, guid: af8ca9748d6472e42a3133878dbe2c19, type: 3}
   spawnRadius: 5
   timeBetweenSpawns: 1
@@ -1863,8 +1863,11 @@ MonoBehaviour:
   waypointCanvas: {fileID: 1625309589}
   rounds:
   - round: 1
+    balloonCount: 3
+    balloonSpeed: 0.2
+  - round: 2
     balloonCount: 5
-    balloonSpeed: 0
+    balloonSpeed: 0.2
   maxLives: 3
   roundText: {fileID: 1939438119}
   balloonCountText: {fileID: 1322853361}
