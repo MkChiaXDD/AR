@@ -6,6 +6,8 @@ public class PlacementMarker : MonoBehaviour
 {
     private ARRaycastManager rayManager;
     private GameObject visual;
+
+    public bool HasValidPosition { get; private set; }
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -24,16 +26,19 @@ public class PlacementMarker : MonoBehaviour
             transform.position = hits[0].pose.position;
             transform.rotation = hits[0].pose.rotation;
             visual.SetActive(true);
+            HasValidPosition = true;
         }
         else
         {
             visual.SetActive(false);
+            HasValidPosition = false;
         }
     }
 
     public void DisableMarker()
     {
-        visual.SetActive(false);   // hide the marker visual
-        enabled = false;           // stop Update() from running
+        visual.SetActive(false);
+        enabled = false;
+        HasValidPosition = false;
     }
 }

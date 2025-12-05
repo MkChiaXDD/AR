@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine.SceneManagement;
+using UnityEngine.XR.ARFoundation;   // 👈 for ARPlaneManager
+
 [System.Serializable]
 public class Round
 {
@@ -17,8 +19,15 @@ public class GameManager : MonoBehaviour
 
     public Transform DefenseBase { get; private set; }
 
+    [Header("Pre-Game")]
+    public GameObject introPanel;          // big panel explaining the game
+    public GameObject tapToPlaceText;      // "Move phone & tap to place base"
+    public ARPlaneManager planeManager;    // from XR Origin
+    public PlacementMarker placementMarker;
+    public ObjectSpawner objectSpawner;    // your existing spawner
+
     [Header("UI")]
-    public GameObject preStartText;
+    public GameObject preStartText;        // was already here - can reuse or hide later
     public GameObject tapToShootText;
     public GameObject winText;
     public GameObject loseText;
@@ -37,7 +46,7 @@ public class GameManager : MonoBehaviour
     public List<Round> rounds = new List<Round>();
 
     [Header("Gameplay")]
-    public int maxLives = 3;
+    public int maxLives = 5;
 
     private int goldCount;
 
@@ -61,10 +70,48 @@ public class GameManager : MonoBehaviour
         Instance = this;
         lives = maxLives;
 
+        // ===== PRE-GAME STATE =====
+        // Show intro panel, hide tap-to-place until Start Scanning
+        if (introPanel != null) introPanel.SetActive(true);
+        if (tapToPlaceText != null) tapToPlaceText.SetActive(false);
+
+        // This was your old hint - you can keep it off until later or just not use it
+        if (preStartText != null) preStartText.SetActive(false);
+
+        // Gameplay UI off at start
         tapToShootText.SetActive(false);
         winText.SetActive(false);
         loseText.SetActive(false);
         restartBtn.SetActive(false);
+
+        // AR components OFF at start – only ON after Start Scanning button
+        if (planeManager != null) planeManager.enabled = false;
+        if (placementMarker != null) placementMarker.enabled = false;
+        if (objectSpawner != null) objectSpawner.enabled = false;
+    }
+
+    // =========================
+    //   PRE-GAME BUTTON HOOK
+    // =========================
+
+    // Call this from your "Start Scanning" button
+    public void OnStartScanning()
+    {
+        // Hide intro explanation
+        if (introPanel != null) introPanel.SetActive(false);
+
+        // Show text telling player to move phone & place base
+        if (tapToPlaceText != null) tapToPlaceText.SetActive(true);
+
+        // If you want to reuse preStartText as extra hint, you can:
+        if (preStartText != null) preStartText.SetActive(true);
+
+        // Enable plane detection + marker + spawner
+        if (planeManager != null) planeManager.enabled = true;
+        if (placementMarker != null) placementMarker.enabled = true;
+        if (objectSpawner != null) objectSpawner.enabled = true;
+
+        Debug.Log("Start Scanning pressed: AR plane detection enabled, placement active.");
     }
 
     // Called by ObjectSpawner AFTER the base is spawned
@@ -73,9 +120,15 @@ public class GameManager : MonoBehaviour
         DefenseBase = baseTransform;
         baseScript.Init(maxLives);
         Debug.Log("Defense base set: " + baseTransform.name);
-        StartGame();
-        preStartText.SetActive(false);
+
+        // Once base is placed: stop showing "tap to place" hints
+        if (tapToPlaceText != null) tapToPlaceText.SetActive(false);
+        if (preStartText != null) preStartText.SetActive(false);
+
+        // Show "Tap to shoot" text
         tapToShootText.SetActive(true);
+
+        StartGame();
     }
 
     public bool HasDefenseBase()
@@ -205,7 +258,6 @@ public class GameManager : MonoBehaviour
     private void WinGame()
     {
         Debug.Log("YOU WIN! All rounds cleared.");
-        // TODO: show win UI, stop game, etc.
         winText.SetActive(true);
         restartBtn.SetActive(true);
     }
@@ -213,7 +265,6 @@ public class GameManager : MonoBehaviour
     private void LoseGame()
     {
         Debug.Log("GAME OVER!");
-        // TODO: show lose UI, stop game, etc.
         loseText.SetActive(true);
         restartBtn.SetActive(true);
     }
