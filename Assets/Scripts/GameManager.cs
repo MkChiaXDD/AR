@@ -29,6 +29,7 @@ public class GameManager : MonoBehaviour
     public float spawnRadius = 0.7f;         // how far from base to spawn
     public float timeBetweenSpawns = 0.8f;   // delay between balloons
     public float timeBetweenRounds = 3f;     // delay between waves
+    public int balloonHealth = 3;
     public GameObject waypointPrefab;
     public Canvas waypointCanvas;
 
@@ -158,7 +159,7 @@ public class GameManager : MonoBehaviour
         Balloon balloon = b.GetComponent<Balloon>();
         if (balloon != null)
         {
-            balloon.Init(DefenseBase, roundData.balloonSpeed);
+            balloon.Init(DefenseBase, roundData.balloonSpeed, balloonHealth);
         }
         else
         {

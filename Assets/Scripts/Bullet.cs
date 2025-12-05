@@ -15,7 +15,7 @@ public class Bullet : MonoBehaviour
             Balloon balloon = collision.gameObject.GetComponent<Balloon>();
             if (balloon != null)
             {
-                balloon.OnHit();
+                balloon.OnHit(1);
             }
             Destroy(gameObject);
         }

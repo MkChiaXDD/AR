@@ -1,15 +1,24 @@
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class Balloon : MonoBehaviour
 {
     private Transform target;
     private float speed;
+    private int maxHp;
+    private int currHp;
+    public Image hpImage;
 
     // Called by spawner AFTER instantiating the balloon
-    public void Init(Transform baseTransform, float speed)
+    public void Init(Transform baseTransform, float speed, int health)
     {
         target = baseTransform;
         this.speed = speed;
+        maxHp = health;
+        currHp = health;
+
+        UpdateUI();
     }
 
     void Update()
@@ -31,9 +40,28 @@ public class Balloon : MonoBehaviour
         }
     }
 
-    public void OnHit()
+    public void OnHit(int damage)
+    {
+        currHp -= damage;
+        UpdateUI();
+
+        if (currHp <= 0)
+        {
+            Die();
+        }
+    }
+
+    private void Die()
     {
         GameManager.Instance.OnBalloonPopped();
         Destroy(gameObject);
+    }
+
+    private void UpdateUI()
+    {
+        if (hpImage != null)
+        {
+            hpImage.fillAmount = (float)currHp / maxHp;
+        }
     }
 }
