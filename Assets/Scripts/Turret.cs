@@ -87,7 +87,7 @@ public class Turret : MonoBehaviour
             return;
         }
 
-        AudioManager.Instance.PlaySFX("TurretShoot");
+        AudioManager.Instance.PlaySFX("TurretShoot", 0.5f);
 
         Vector3 dir = (target.position - firePoint.position).normalized;
 
