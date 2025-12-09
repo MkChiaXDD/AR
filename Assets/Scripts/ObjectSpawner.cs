@@ -74,6 +74,7 @@ public class ObjectSpawner : MonoBehaviour
     public void EnableTurretPlacement()
     {
         if (!basePlaced) return;
+        if (!placement.HasValidPosition) return;
         if (gameMgr.GetGoldAmount() < turretPrice) return;
 
         placingTurret = true;
@@ -85,7 +86,6 @@ public class ObjectSpawner : MonoBehaviour
     public void OnPlaceTurretButton()
     {
         if (!placingTurret) return;
-        if (!placement.HasValidPosition) return;
         if (gameMgr.GetGoldAmount() < turretPrice) return;
 
         AudioManager.Instance.PlaySFX("Place");

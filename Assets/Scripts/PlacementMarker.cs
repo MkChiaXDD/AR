@@ -2,43 +2,87 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.XR.ARFoundation;
 using UnityEngine.XR.ARSubsystems;
+
 public class PlacementMarker : MonoBehaviour
 {
     private ARRaycastManager rayManager;
     private GameObject visual;
 
     public bool HasValidPosition { get; private set; }
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+
+    // Reuse this list instead of allocating every frame
+    private static readonly List<ARRaycastHit> hits = new List<ARRaycastHit>();
+
+    private void Awake()
     {
         rayManager = FindAnyObjectByType<ARRaycastManager>();
+        if (rayManager == null)
+        {
+            Debug.LogWarning("PlacementMarker: No ARRaycastManager found in scene.");
+        }
+
         visual = transform.GetChild(0).gameObject;
-        visual.SetActive(false);
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnEnable()
     {
-        List<ARRaycastHit> hits = new List<ARRaycastHit>();
-        rayManager.Raycast(new Vector2(Screen.width / 2.0f, Screen.height / 2.0f), hits, TrackableType.Planes);
-        if (hits.Count > 0)
+        // Fresh state whenever marker is enabled (e.g. after restart + StartScanning)
+        HasValidPosition = false;
+        if (visual != null)
+            visual.SetActive(false);
+    }
+
+    private void Start()
+    {
+        // In case Awake order was weird, enforce initial state
+        HasValidPosition = false;
+        if (visual != null)
+            visual.SetActive(false);
+    }
+
+    private void Update()
+    {
+        if (rayManager == null)
+            return;
+
+        hits.Clear();
+        Vector2 screenCenter = new Vector2(Screen.width / 2.0f, Screen.height / 2.0f);
+
+        // PlaneWithinPolygon is usually what you want
+        if (rayManager.Raycast(screenCenter, hits, TrackableType.PlaneWithinPolygon))
         {
-            transform.position = hits[0].pose.position;
-            transform.rotation = hits[0].pose.rotation;
-            visual.SetActive(true);
+            Pose pose = hits[0].pose;
+            transform.SetPositionAndRotation(pose.position, pose.rotation);
+
+            if (!visual.activeSelf)
+                visual.SetActive(true);
+
             HasValidPosition = true;
         }
         else
         {
-            visual.SetActive(false);
+            if (visual.activeSelf)
+                visual.SetActive(false);
+
             HasValidPosition = false;
         }
     }
 
     public void DisableMarker()
     {
-        visual.SetActive(false);   // hide the marker visual
+        if (visual != null)
+            visual.SetActive(false);
+
         enabled = false;           // stop Update() from running
         HasValidPosition = false;
+    }
+
+    public void ResetMarker()
+    {
+        // Called when starting a NEW scan/game
+        enabled = true;
+        HasValidPosition = false;
+        if (visual != null)
+            visual.SetActive(false);
     }
 }

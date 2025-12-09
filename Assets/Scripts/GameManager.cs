@@ -121,7 +121,13 @@ public class GameManager : MonoBehaviour
         if (placeBaseText) placeBaseText.SetActive(true);
 
         if (planeManager) planeManager.enabled = true;
-        if (placementMarker) placementMarker.enabled = true;
+
+        if (placementMarker)
+        {
+            placementMarker.enabled = true;   // make sure script runs
+            placementMarker.ResetMarker();    // fresh state every time
+        }
+
         if (objectSpawner) objectSpawner.enabled = true;
     }
 
