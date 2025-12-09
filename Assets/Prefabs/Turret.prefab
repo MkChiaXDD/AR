@@ -157,7 +157,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyTag: Enemy
-  range: 10
+  range: 5
   rotationSpeed: 10
   headToRotate: {fileID: 3416789895751605090}
   bulletPrefab: {fileID: 8889297156337617821, guid: 26b1350e1c4870e46b854d490fa8252b, type: 3}
