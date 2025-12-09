@@ -35,14 +35,6 @@ public class ObjectSpawner : MonoBehaviour
             PlaceBase();
             return;
         }
-
-        // If we are in turret placement mode
-        if (placingTurret && gameMgr.GetGoldAmount() >= turretPrice)
-        {
-            PlaceTurret();
-            gameMgr.UseGold(turretPrice);
-            placingTurret = false;  // exit turret placing mode
-        }
     }
 
     // Call this from your UI Button!
@@ -74,6 +66,19 @@ public class ObjectSpawner : MonoBehaviour
             GameManager.Instance.SetDefenseBase(baseObj.transform, baseScript);
         }
     }
+
+    public void OnPlaceTurretButton()
+    {
+        if (!basePlaced) return; // cannot place turret before base
+        if (!placement.HasValidPosition) return; // marker must be valid
+
+        if (gameMgr.GetGoldAmount() >= turretPrice)
+        {
+            PlaceTurret();
+            gameMgr.UseGold(turretPrice);
+        }
+    }
+
 
     private void PlaceTurret()
     {
