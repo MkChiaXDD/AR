@@ -31,6 +31,12 @@ public class TapShooter : MonoBehaviour
     {
         if (gameMgr.gameEnd == true) return;
 
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
+        {
+            if (TryCollectCoin(Input.GetTouch(0).position))
+                return;  // stop here, do NOT shoot if we tapped a coin
+        }
+
         // countdown cooldown timer
         if (fireCooldown > 0f)
             fireCooldown -= Time.deltaTime;
@@ -101,4 +107,26 @@ public class TapShooter : MonoBehaviour
     {
         fireRateText.text = "Firerate: " + fireRate;
     }
+
+    private bool TryCollectCoin(Vector2 screenPos)
+    {
+        Ray ray = arCamera.ScreenPointToRay(screenPos);
+        if (Physics.Raycast(ray, out RaycastHit hit, 2f)) // 2m range is enough for AR
+        {
+            if (hit.collider.CompareTag("Coin"))
+            {
+                // Add gold
+                gameMgr.AddGold(1);
+
+                // Destroy or pool the coin
+                Destroy(hit.collider.gameObject);
+
+                //AudioManager.Instance.PlaySFX("CoinCollect");
+
+                return true;    // coin collected
+            }
+        }
+        return false; // no coin hit
+    }
+
 }
