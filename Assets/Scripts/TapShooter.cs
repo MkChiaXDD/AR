@@ -113,6 +113,7 @@ public class TapShooter : MonoBehaviour
         Ray ray = arCamera.ScreenPointToRay(screenPos);
         if (Physics.Raycast(ray, out RaycastHit hit, 2f)) // 2m range is enough for AR
         {
+            MobileDebug.Instance.Log("Ray hit: " + hit.collider.name);
             if (hit.collider.CompareTag("Coin"))
             {
                 // Add gold
