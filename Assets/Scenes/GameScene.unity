@@ -5645,7 +5645,7 @@ MonoBehaviour:
     normalBalloonSpeed: 0.4
     specialBalloonCount: 4
     specialBalloonSpeed: 0.2
-  maxLives: 3
+  maxLives: 5
   roundText: {fileID: 1939438119}
   balloonCountText: {fileID: 1322853361}
   goldText: {fileID: 597302041}
