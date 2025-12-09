@@ -267,4 +267,10 @@ public class GameManager : MonoBehaviour
         goldCount -= price;
         UpdateGoldCountText(goldCount);
     }
+
+    public void AddGold(int amount)
+    {
+        goldCount += amount;
+        UpdateGoldCountText(goldCount);
+    }
 }

@@ -3,33 +3,41 @@ using UnityEngine.XR.ARFoundation;
 
 public class ObjectSpawner : MonoBehaviour
 {
-    public GameObject basePrefab;      // your defense base
-    public GameObject turretPrefab;    // turret you want to place
+    [Header("Prefabs")]
+    public GameObject basePrefab;
+    public GameObject turretPrefab;
+    public GameObject farmPrefab;          // NEW — coin spawner building
+
     private PlacementMarker placement;
     public GameManager gameMgr;
+
+    [Header("UI Text")]
     public GameObject placeTurretText;
+    public GameObject placeFarmText;       // NEW — UI hint for placing farm
+
+    [Header("Prices")]
+    public int turretPrice = 3;
+    public int farmPrice = 5;              // NEW — cost for farm
 
     private bool basePlaced = false;
     private bool placingTurret = false;
-
-    public int turretPrice = 3;
+    private bool placingFarm = false;      // NEW
 
     void Start()
     {
         placement = FindFirstObjectByType<PlacementMarker>();
         placeTurretText.SetActive(false);
+        placeFarmText.SetActive(false);
     }
 
     void Update()
     {
         if (Input.touchCount == 0) return;
         if (Input.touches[0].phase != TouchPhase.Began) return;
-
         if (placement == null) return;
-
         if (!placement.HasValidPosition) return;
 
-        // If base is not placed yet: FIRST TAP places base
+        // BASE placement (only once)
         if (!basePlaced)
         {
             PlaceBase();
@@ -37,54 +45,93 @@ public class ObjectSpawner : MonoBehaviour
         }
     }
 
-    // Call this from your UI Button!
-    public void EnableTurretPlacement()
+    //????????????????????????????????????????????
+    // BASE (farm stays separate — this is just your defense base)
+    //????????????????????????????????????????????
+    public void OnPlaceBaseButton()
     {
-        if (gameMgr.GetGoldAmount() < turretPrice) return;
-        placingTurret = true;
-        placeTurretText.SetActive(true);
-    }
-
-    public void DisableTurretPlacement()
-    {
-        placingTurret = false;
-        placeTurretText.SetActive(false);
+        if (basePlaced) return;
+        if (!placement.HasValidPosition) return;
+        PlaceBase();
     }
 
     private void PlaceBase()
     {
-        if (placement == null) return;
-
         GameObject baseObj = Instantiate(basePrefab, placement.transform.position, placement.transform.rotation);
 
-        FindAnyObjectByType<ARPlaneManager>().enabled = false; // if you disabled planes already, fine
+        ARPlaneManager pm = FindAnyObjectByType<ARPlaneManager>();
+        if (pm != null) pm.enabled = false;
+
         Base baseScript = baseObj.GetComponent<Base>();
         basePlaced = true;
 
-        if (GameManager.Instance != null)
-        {
-            GameManager.Instance.SetDefenseBase(baseObj.transform, baseScript);
-        }
+        gameMgr.SetDefenseBase(baseObj.transform, baseScript);
+    }
+
+    //????????????????????????????????????????????
+    // TURRET SYSTEM
+    //????????????????????????????????????????????
+    public void EnableTurretPlacement()
+    {
+        if (!basePlaced) return;
+        if (gameMgr.GetGoldAmount() < turretPrice) return;
+
+        placingTurret = true;
+        placingFarm = false; // turn off other modes
+        placeTurretText.SetActive(true);
+        placeFarmText.SetActive(false);
     }
 
     public void OnPlaceTurretButton()
     {
-        if (!basePlaced) return; // cannot place turret before base
-        if (!placement.HasValidPosition) return; // marker must be valid
-
-        if (gameMgr.GetGoldAmount() >= turretPrice)
-        {
-            PlaceTurret();
-            gameMgr.UseGold(turretPrice);
-        }
-    }
-
-
-    private void PlaceTurret()
-    {
-        if (placement == null) return;
+        if (!placingTurret) return;
+        if (!placement.HasValidPosition) return;
+        if (gameMgr.GetGoldAmount() < turretPrice) return;
 
         Instantiate(turretPrefab, placement.transform.position, placement.transform.rotation);
+        gameMgr.UseGold(turretPrice);
+
+        placingTurret = false;
         placeTurretText.SetActive(false);
+    }
+
+    //????????????????????????????????????????????
+    // FARM / COIN SPAWNER SYSTEM — NEW
+    //????????????????????????????????????????????
+    public void EnableFarmPlacement()
+    {
+        if (!basePlaced) return;                       // base must exist first
+        if (gameMgr.GetGoldAmount() < farmPrice) return;
+
+        placingFarm = true;
+        placingTurret = false;
+
+        placeFarmText.SetActive(true);
+        placeTurretText.SetActive(false);
+    }
+
+    public void OnPlaceFarmButton()
+    {
+        if (!placingFarm) return;
+        if (!placement.HasValidPosition) return;
+        if (gameMgr.GetGoldAmount() < farmPrice) return;
+
+        Instantiate(farmPrefab, placement.transform.position, placement.transform.rotation);
+        gameMgr.UseGold(farmPrice);
+
+        placingFarm = false;
+        placeFarmText.SetActive(false);
+    }
+
+    //????????????????????????????????????????????
+    // Optional: Cancel
+    //????????????????????????????????????????????
+    public void CancelPlacement()
+    {
+        placingTurret = false;
+        placingFarm = false;
+
+        placeTurretText.SetActive(false);
+        placeFarmText.SetActive(false);
     }
 }
