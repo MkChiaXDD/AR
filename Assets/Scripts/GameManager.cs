@@ -9,9 +9,16 @@ using UnityEngine.XR.ARFoundation;
 public class Round
 {
     public int round;
-    public int balloonCount;
-    public float balloonSpeed;
+
+    [Header("Normal Balloons")]
+    public int normalBalloonCount;
+    public float normalBalloonSpeed;
+
+    [Header("Special Balloons")]
+    public int specialBalloonCount;   // set > 0 from round 3 onwards
+    public float specialBalloonSpeed;
 }
+
 
 public class GameManager : MonoBehaviour
 {
@@ -34,11 +41,13 @@ public class GameManager : MonoBehaviour
     public GameObject placeTurretText;
 
     [Header("Balloon Settings")]
-    public GameObject BalloonPrefab;
+    public GameObject BalloonPrefab;          // normal
+    public GameObject specialBalloonPrefab;   // special type
     public float spawnRadius = 0.7f;
     public float timeBetweenSpawns = 0.8f;
     public float timeBetweenRounds = 3f;
     public int balloonHealth = 3;
+    public int specialBalloonHealth = 5;
     public GameObject waypointPrefab;
     public Canvas waypointCanvas;
 
@@ -143,16 +152,25 @@ public class GameManager : MonoBehaviour
         if (!HasDefenseBase() || BalloonPrefab == null)
             yield break;
 
-        balloonsAlive = roundData.balloonCount;
+        int totalThisRound = roundData.normalBalloonCount + roundData.specialBalloonCount;
+        balloonsAlive = totalThisRound;
         UpdateBalloonCountText(balloonsAlive);
 
-        for (int i = 0; i < roundData.balloonCount; i++)
+        // Spawn normal balloons
+        for (int i = 0; i < roundData.normalBalloonCount; i++)
         {
-            SpawnOneBalloon(roundData);
+            SpawnOneBalloon(BalloonPrefab, roundData.normalBalloonSpeed, balloonHealth);
             yield return new WaitForSeconds(timeBetweenSpawns);
         }
 
+        // Spawn special balloons
+        for (int i = 0; i < roundData.specialBalloonCount; i++)
+        {
+            SpawnOneBalloon(specialBalloonPrefab, roundData.specialBalloonSpeed, specialBalloonHealth);
+            yield return new WaitForSeconds(timeBetweenSpawns);
+        }
 
+        // Wait for all balloons to die/leak
         while (balloonsAlive > 0)
             yield return null;
 
@@ -160,17 +178,17 @@ public class GameManager : MonoBehaviour
         StartNextRound();
     }
 
-    private void SpawnOneBalloon(Round roundData)
+    private void SpawnOneBalloon(GameObject prefab, float moveSpeed, int health)
     {
         Vector3 basePos = DefenseBase.position;
         Vector2 offset2D = Random.insideUnitCircle.normalized * spawnRadius;
         Vector3 spawnPos = basePos + new Vector3(offset2D.x, 0.2f, offset2D.y);
 
-        GameObject b = Instantiate(BalloonPrefab, spawnPos, Quaternion.identity);
+        GameObject b = Instantiate(prefab, spawnPos, Quaternion.identity);
         Balloon balloon = b.GetComponent<Balloon>();
 
         if (balloon != null)
-            balloon.Init(DefenseBase, roundData.balloonSpeed, balloonHealth);
+            balloon.Init(DefenseBase, moveSpeed, health);
 
         if (waypointPrefab != null && waypointCanvas != null)
         {
@@ -196,10 +214,10 @@ public class GameManager : MonoBehaviour
     }
 
     // Balloon popped by player
-    public void OnBalloonPopped()
+    public void OnBalloonPopped(int gold)
     {
         balloonsAlive--;
-        goldCount++;
+        goldCount+=gold;
 
         UpdateGoldCountText(goldCount);
         UpdateBalloonCountText(balloonsAlive);

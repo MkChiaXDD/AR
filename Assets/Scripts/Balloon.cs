@@ -8,6 +8,7 @@ public class Balloon : MonoBehaviour
     private int maxHp;
     private int currHp;
     public Image hpImage;
+    public int gold = 1;
 
     // Called by spawner AFTER instantiating the balloon
     public void Init(Transform baseTransform, float speed, int health)
@@ -53,7 +54,7 @@ public class Balloon : MonoBehaviour
     private void Die()
     {
         ParticlePool.Instance.GetParticle(transform.position, Quaternion.identity);
-        GameManager.Instance.OnBalloonPopped();
+        GameManager.Instance.OnBalloonPopped(gold);
         AudioManager.Instance.PlaySFX("BalloonPop");
         Destroy(gameObject);
     }

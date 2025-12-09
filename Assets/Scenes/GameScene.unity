@@ -172,7 +172,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_PlanePrefab: {fileID: 2342611804678183579, guid: a37d1013f4cb5f54ba51f473a3896dca, type: 3}
-  m_DetectionMode: 1
+  m_DetectionMode: 5
 --- !u!114 &384096
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4766,28 +4766,40 @@ MonoBehaviour:
   restartBtn: {fileID: 490123064}
   placeTurretText: {fileID: 1676051983}
   BalloonPrefab: {fileID: 4593686063630798981, guid: af8ca9748d6472e42a3133878dbe2c19, type: 3}
+  specialBalloonPrefab: {fileID: 4593686063630798981, guid: c10bb45ca916c3b4d8217f2e83e9c205, type: 3}
   spawnRadius: 5
   timeBetweenSpawns: 1
   timeBetweenRounds: 3
-  balloonHealth: 3
+  balloonHealth: 2
+  specialBalloonHealth: 5
   waypointPrefab: {fileID: 5300751638803824485, guid: ee17188ce02fd0d4898682fe66faf1b6, type: 3}
   waypointCanvas: {fileID: 1625309589}
   rounds:
   - round: 1
-    balloonCount: 3
-    balloonSpeed: 0.2
+    normalBalloonCount: 3
+    normalBalloonSpeed: 0.2
+    specialBalloonCount: 0
+    specialBalloonSpeed: 0
   - round: 2
-    balloonCount: 4
-    balloonSpeed: 0.2
+    normalBalloonCount: 5
+    normalBalloonSpeed: 0.3
+    specialBalloonCount: 0
+    specialBalloonSpeed: 0
   - round: 3
-    balloonCount: 5
-    balloonSpeed: 0.3
+    normalBalloonCount: 5
+    normalBalloonSpeed: 0.3
+    specialBalloonCount: 2
+    specialBalloonSpeed: 0.1
   - round: 4
-    balloonCount: 6
-    balloonSpeed: 0.3
+    normalBalloonCount: 6
+    normalBalloonSpeed: 0.4
+    specialBalloonCount: 3
+    specialBalloonSpeed: 0.15
   - round: 5
-    balloonCount: 7
-    balloonSpeed: 0.4
+    normalBalloonCount: 8
+    normalBalloonSpeed: 0.4
+    specialBalloonCount: 4
+    specialBalloonSpeed: 0.2
   maxLives: 3
   roundText: {fileID: 1939438119}
   balloonCountText: {fileID: 1322853361}
