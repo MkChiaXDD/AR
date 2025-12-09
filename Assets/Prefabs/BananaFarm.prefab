@@ -45,7 +45,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d3c141cec495a244e9f3aef29945bbf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  coinPrefab: {fileID: 0}
+  coinPrefab: {fileID: 2656064660174821373, guid: 6f62cf2b86f47c54f938d005550107ff, type: 3}
   timeBetweenDrops: 3
   coinsPerDrop: 1
   dropRadius: 0.1
