@@ -35,7 +35,7 @@ public class TapShooter : MonoBehaviour
         if (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began)
         {
             if (TryCollectCoin(Input.GetTouch(0).position))
-                return;  // stop here, do NOT shoot if we tapped a coin
+                return;
         }
 
         // countdown cooldown timer
@@ -115,11 +115,9 @@ public class TapShooter : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit, 10f, coinLayerMask))
         {
-            MobileDebug.Instance.Log(hit.collider.name);
-
             gameMgr.AddGold(1);
             Destroy(hit.collider.gameObject);
-            //AudioManager.Instance.PlaySFX("CoinCollect");
+            AudioManager.Instance.PlaySFX("CoinCollect", 0.1f);
             return true;
         }
 

@@ -42,6 +42,8 @@ public class Farm : MonoBehaviour
             );
 
             Instantiate(coinPrefab, spawnPos, Quaternion.identity);
+
+            AudioManager.Instance.PlaySFX("DropCoin");
         }
     }
 }

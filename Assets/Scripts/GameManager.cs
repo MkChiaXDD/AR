@@ -129,7 +129,6 @@ public class GameManager : MonoBehaviour
         if (!HasDefenseBase()) return;
         if (rounds == null || rounds.Count == 0) return;
 
-        AddGold(100);
         currentRoundIndex = -1;
         StartNextRound();
     }

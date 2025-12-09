@@ -88,6 +88,8 @@ public class ObjectSpawner : MonoBehaviour
         if (!placement.HasValidPosition) return;
         if (gameMgr.GetGoldAmount() < turretPrice) return;
 
+        AudioManager.Instance.PlaySFX("Place");
+
         Instantiate(turretPrefab, placement.transform.position, placement.transform.rotation);
         gameMgr.UseGold(turretPrice);
 
@@ -100,7 +102,8 @@ public class ObjectSpawner : MonoBehaviour
     //????????????????????????????????????????????
     public void EnableFarmPlacement()
     {
-        if (!basePlaced) return;                       // base must exist first
+        if (!basePlaced) return;
+        if (!placement.HasValidPosition) return;
         if (gameMgr.GetGoldAmount() < farmPrice) return;
 
         placingFarm = true;
@@ -113,8 +116,9 @@ public class ObjectSpawner : MonoBehaviour
     public void OnPlaceFarmButton()
     {
         if (!placingFarm) return;
-        if (!placement.HasValidPosition) return;
         if (gameMgr.GetGoldAmount() < farmPrice) return;
+
+        AudioManager.Instance.PlaySFX("Place");
 
         Instantiate(farmPrefab, placement.transform.position, placement.transform.rotation);
         gameMgr.UseGold(farmPrice);
