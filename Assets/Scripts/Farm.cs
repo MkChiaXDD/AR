@@ -31,6 +31,8 @@ public class Farm : MonoBehaviour
 
     void DropCoins()
     {
+        if (GameManager.Instance.gameEnd == true) return;
+
         for (int i = 0; i < coinsPerDrop; i++)
         {
             Vector2 offset = Random.insideUnitCircle * dropRadius;

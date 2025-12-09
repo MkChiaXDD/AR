@@ -74,6 +74,7 @@ public class ObjectSpawner : MonoBehaviour
     public void EnableTurretPlacement()
     {
         if (!basePlaced) return;
+        if (GameManager.Instance.gameEnd == true) return;
         if (gameMgr.GetGoldAmount() < turretPrice) return;
 
         placingTurret = true;
@@ -103,6 +104,7 @@ public class ObjectSpawner : MonoBehaviour
     public void EnableFarmPlacement()
     {
         if (!basePlaced) return;
+        if (GameManager.Instance.gameEnd == true) return;
         if (!placement.HasValidPosition) return;
         if (gameMgr.GetGoldAmount() < farmPrice) return;
 
