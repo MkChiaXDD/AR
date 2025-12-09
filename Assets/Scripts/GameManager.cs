@@ -40,8 +40,8 @@ public class GameManager : MonoBehaviour
     public GameObject placeTurretText;
 
     [Header("Balloon Settings")]
-    public GameObject BalloonPrefab;          // normal
-    public GameObject specialBalloonPrefab;   // special type
+    public GameObject BalloonPrefab;
+    public GameObject specialBalloonPrefab;
     public float spawnRadius = 0.7f;
     public float timeBetweenSpawns = 0.8f;
     public float timeBetweenRounds = 3f;
@@ -81,12 +81,8 @@ public class GameManager : MonoBehaviour
         ResetState();
     }
 
-    /// <summary>
-    /// Full reset of game state & UI. Called on startup and after scene reload.
-    /// </summary>
     private void ResetState()
     {
-        // core state
         gameEnd = false;
         goldCount = 0;
         lives = maxLives;
@@ -94,7 +90,6 @@ public class GameManager : MonoBehaviour
         currentRoundIndex = -1;
         DefenseBase = null;
 
-        // UI
         if (introPanel) introPanel.SetActive(true);
         if (placeBaseText) placeBaseText.SetActive(false);
         if (tapToShootText) tapToShootText.SetActive(false);
@@ -103,18 +98,15 @@ public class GameManager : MonoBehaviour
         if (loseText) loseText.SetActive(false);
         if (restartBtn) restartBtn.SetActive(false);
 
-        // AR / placement
         if (planeManager) planeManager.enabled = false;
         if (placementMarker) placementMarker.enabled = false;
         if (objectSpawner) objectSpawner.enabled = false;
 
-        // text values
         if (goldText) UpdateGoldCountText(goldCount);
         if (balloonCountText) UpdateBalloonCountText(0);
         if (roundText) UpdateRoundText(1);
     }
 
-    // Called from UI button
     public void OnStartScanning()
     {
         if (introPanel) introPanel.SetActive(false);
@@ -124,14 +116,13 @@ public class GameManager : MonoBehaviour
 
         if (placementMarker)
         {
-            placementMarker.enabled = true;   // make sure script runs
-            placementMarker.ResetMarker();    // fresh state every time
+            placementMarker.enabled = true;
+            placementMarker.ResetMarker();
         }
 
         if (objectSpawner) objectSpawner.enabled = true;
     }
 
-    // Called when the base is spawned
     public void SetDefenseBase(Transform baseTransform, Base baseScript)
     {
         DefenseBase = baseTransform;
@@ -184,21 +175,18 @@ public class GameManager : MonoBehaviour
         balloonsAlive = totalThisRound;
         UpdateBalloonCountText(balloonsAlive);
 
-        // Spawn normal balloons
         for (int i = 0; i < roundData.normalBalloonCount; i++)
         {
             SpawnOneBalloon(BalloonPrefab, roundData.normalBalloonSpeed, balloonHealth);
             yield return new WaitForSeconds(timeBetweenSpawns);
         }
 
-        // Spawn special balloons
         for (int i = 0; i < roundData.specialBalloonCount; i++)
         {
             SpawnOneBalloon(specialBalloonPrefab, roundData.specialBalloonSpeed, specialBalloonHealth);
             yield return new WaitForSeconds(timeBetweenSpawns);
         }
 
-        // Wait for all balloons to die/leak
         while (balloonsAlive > 0)
             yield return null;
 
@@ -228,7 +216,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    // Balloon reached the base
     public void OnBalloonLeak()
     {
         if (gameEnd) return;
@@ -243,7 +230,6 @@ public class GameManager : MonoBehaviour
             LoseGame();
     }
 
-    // Balloon popped by player
     public void OnBalloonPopped(int gold)
     {
         if (gameEnd) return;
@@ -289,7 +275,6 @@ public class GameManager : MonoBehaviour
 
     public void RestartGame()
     {
-        // safest: reload current scene so everything (including AR stuff) is rebuilt
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

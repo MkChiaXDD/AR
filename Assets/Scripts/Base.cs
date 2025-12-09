@@ -45,6 +45,5 @@ public class Base : MonoBehaviour
     private void OnBaseDestroyed()
     {
         Debug.Log("Base destroyed!");
-        // Here you can call GameManager.Instance.LoseGame(); etc.
     }
 }

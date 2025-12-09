@@ -10,7 +10,6 @@ public class Balloon : MonoBehaviour
     public Image hpImage;
     public int gold = 1;
 
-    // Called by spawner AFTER instantiating the balloon
     public void Init(Transform baseTransform, float speed, int health)
     {
         target = baseTransform;

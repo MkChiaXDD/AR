@@ -8,7 +8,7 @@ public class AudioManager : MonoBehaviour
     [System.Serializable]
     public class NamedClip
     {
-        public string name;      // e.g. "MainTheme", "Jump", "Explosion"
+        public string name;
         public AudioClip clip;
     }
 
@@ -25,7 +25,6 @@ public class AudioManager : MonoBehaviour
 
     private void Awake()
     {
-        // Singleton pattern
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -63,8 +62,6 @@ public class AudioManager : MonoBehaviour
             }
         }
     }
-
-    // ---------------- BGM ----------------
 
     public void PlayBGM(string name, bool loop = true, float volume = 1f)
     {
@@ -104,8 +101,6 @@ public class AudioManager : MonoBehaviour
             bgmSource.UnPause();
     }
 
-    // ---------------- SFX ----------------
-
     public void PlaySFX(string name, float volume = 1f)
     {
         if (!sfxDict.TryGetValue(name, out var clip))
@@ -123,7 +118,6 @@ public class AudioManager : MonoBehaviour
         sfxSource.PlayOneShot(clip, volume);
     }
 
-    // Optional: global volume controls
     public void SetBGMVolume(float volume)
     {
         if (bgmSource != null)

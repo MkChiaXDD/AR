@@ -3,9 +3,9 @@ using UnityEngine.UI;
 
 public class Waypoint : MonoBehaviour
 {
-    public Image img;          // icon on UI
-    public Transform target;   // balloon to follow
-    public Camera arCamera;    // assign in code or use Camera.main
+    public Image img;
+    public Transform target;
+    public Camera arCamera;
     public Vector2 screenOffset = new Vector2(0, 2f);
 
     private void Awake()
@@ -24,7 +24,6 @@ public class Waypoint : MonoBehaviour
     {
         if (target == null || img == null || arCamera == null)
         {
-            // balloon died or camera missing -> remove waypoint
             Destroy(gameObject);
             return;
         }
@@ -35,10 +34,8 @@ public class Waypoint : MonoBehaviour
         float minY = img.GetPixelAdjustedRect().height / 2;
         float maxY = Screen.height - minY;
 
-        // world -> screen
         Vector3 screenPos = arCamera.WorldToScreenPoint(target.position);
 
-        // if target is behind camera, flip position horizontally
         if (Vector3.Dot((target.position - arCamera.transform.position), arCamera.transform.forward) < 0)
         {
             if (screenPos.x < Screen.width / 2f)

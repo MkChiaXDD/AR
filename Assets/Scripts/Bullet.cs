@@ -15,7 +15,6 @@ public class Bullet : MonoBehaviour
         lifeTimer -= Time.deltaTime;
         if (lifeTimer <= 0f)
         {
-            // Return to pool instead of destroying
             if (BulletPool.Instance != null)
                 BulletPool.Instance.ReturnBullet(gameObject);
             else

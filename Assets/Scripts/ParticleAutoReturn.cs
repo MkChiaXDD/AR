@@ -18,7 +18,6 @@ public class ParticleAutoReturn : MonoBehaviour
 
     private System.Collections.IEnumerator ReturnWhenDone()
     {
-        // Wait until the particle system completely stops
         yield return new WaitUntil(() => !ps.IsAlive(true));
 
         ParticlePool.Instance.ReturnParticle(gameObject);

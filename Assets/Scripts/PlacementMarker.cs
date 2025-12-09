@@ -10,7 +10,6 @@ public class PlacementMarker : MonoBehaviour
 
     public bool HasValidPosition { get; private set; }
 
-    // Reuse this list instead of allocating every frame
     private static readonly List<ARRaycastHit> hits = new List<ARRaycastHit>();
 
     private void Awake()
@@ -26,7 +25,6 @@ public class PlacementMarker : MonoBehaviour
 
     private void OnEnable()
     {
-        // Fresh state whenever marker is enabled (e.g. after restart + StartScanning)
         HasValidPosition = false;
         if (visual != null)
             visual.SetActive(false);
@@ -34,7 +32,6 @@ public class PlacementMarker : MonoBehaviour
 
     private void Start()
     {
-        // In case Awake order was weird, enforce initial state
         HasValidPosition = false;
         if (visual != null)
             visual.SetActive(false);
@@ -48,7 +45,6 @@ public class PlacementMarker : MonoBehaviour
         hits.Clear();
         Vector2 screenCenter = new Vector2(Screen.width / 2.0f, Screen.height / 2.0f);
 
-        // PlaneWithinPolygon is usually what you want
         if (rayManager.Raycast(screenCenter, hits, TrackableType.PlaneWithinPolygon))
         {
             Pose pose = hits[0].pose;
@@ -73,13 +69,12 @@ public class PlacementMarker : MonoBehaviour
         if (visual != null)
             visual.SetActive(false);
 
-        enabled = false;           // stop Update() from running
+        enabled = false;
         HasValidPosition = false;
     }
 
     public void ResetMarker()
     {
-        // Called when starting a NEW scan/game
         enabled = true;
         HasValidPosition = false;
         if (visual != null)

@@ -11,11 +11,11 @@ public class Farm : MonoBehaviour
     public float dropRadius = 0.1f;
 
     private float timer;
-    private float baseY; // store farm Y height
+    private float baseY;
 
     private void Start()
     {
-        baseY = transform.position.y; // save Y level once
+        baseY = transform.position.y;
     }
 
     void Update()
@@ -37,7 +37,7 @@ public class Farm : MonoBehaviour
 
             Vector3 spawnPos = new Vector3(
                 transform.position.x + offset.x,
-                baseY,                                   // ALWAYS same Y height
+                baseY,
                 transform.position.z + offset.y
             );
 

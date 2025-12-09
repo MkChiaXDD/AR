@@ -20,7 +20,6 @@ public class BulletPool : MonoBehaviour
 
         Instance = this;
 
-        // Pre-spawn bullets
         for (int i = 0; i < initialPoolSize; i++)
         {
             GameObject bullet = Instantiate(bulletPrefab, transform);
@@ -31,7 +30,6 @@ public class BulletPool : MonoBehaviour
 
     public GameObject GetBullet(Vector3 position, Quaternion rotation)
     {
-        // Find an inactive bullet
         foreach (GameObject bullet in pool)
         {
             if (!bullet.activeInHierarchy)
@@ -42,7 +40,6 @@ public class BulletPool : MonoBehaviour
             }
         }
 
-        // If all in use, make a new one (optional)
         GameObject newBullet = Instantiate(bulletPrefab, position, rotation, transform);
         pool.Add(newBullet);
         return newBullet;

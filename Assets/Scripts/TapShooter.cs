@@ -10,7 +10,7 @@ public class TapShooter : MonoBehaviour
     public float bulletSpeed = 5f;
 
     [Header("Fire Settings")]
-    public int fireRate = 1;      // bullets per second
+    public int fireRate = 1;
     private float fireCooldown = 0f;
     public TMP_Text fireRateText;
     public int fireRateUpgradeCost = 5;
@@ -38,17 +38,14 @@ public class TapShooter : MonoBehaviour
                 return;
         }
 
-        // countdown cooldown timer
         if (fireCooldown > 0f)
             fireCooldown -= Time.deltaTime;
 
-        // if no touches, don't shoot
         if (Input.touchCount == 0)
             return;
 
         Touch touch = Input.GetTouch(0);
 
-        // we only care if the finger is held OR just touched
         bool isHolding =
             touch.phase == TouchPhase.Began ||
             touch.phase == TouchPhase.Stationary ||
@@ -57,11 +54,9 @@ public class TapShooter : MonoBehaviour
         if (!isHolding)
             return;
 
-        // still cooling down ? cannot shoot yet
         if (fireCooldown > 0f)
             return;
 
-        // reset cooldown BEFORE shooting
         fireCooldown = 1f / fireRate;
 
         tapCount++;

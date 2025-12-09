@@ -10,7 +10,6 @@ public class Billboard : MonoBehaviour
 
     private void Start()
     {
-        // If no camera assigned, use main camera
         if (targetCamera == null)
         {
             targetCamera = Camera.main;
@@ -21,17 +20,16 @@ public class Billboard : MonoBehaviour
     {
         if (targetCamera == null) return;
 
-        // Direction from this object to the camera
         Vector3 dir = targetCamera.transform.position - transform.position;
 
         if (lockY)
         {
-            dir.y = 0f; // ignore vertical difference
+            dir.y = 0f;
         }
 
         if (dir.sqrMagnitude > 0.0001f)
         {
-            Quaternion lookRot = Quaternion.LookRotation(-dir); // face *towards* camera
+            Quaternion lookRot = Quaternion.LookRotation(-dir);
             transform.rotation = lookRot;
         }
     }

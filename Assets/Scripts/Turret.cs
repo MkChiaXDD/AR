@@ -3,16 +3,16 @@ using UnityEngine;
 public class Turret : MonoBehaviour
 {
     [Header("Targeting")]
-    public string enemyTag = "Enemy";   // balloons must use this tag
-    public float range = 3f;            // how far the turret can see
-    public float rotationSpeed = 10f;   // how fast it turns to face target
-    public Transform headToRotate;      // optional: part that rotates (can be same as this.transform)
+    public string enemyTag = "Enemy";
+    public float range = 3f;
+    public float rotationSpeed = 10f;
+    public Transform headToRotate;
 
     [Header("Shooting")]
     public GameObject bulletPrefab;
-    public Transform firePoint;         // where bullets spawn
-    public float fireRate = 1f;         // shots per second
-    public float bulletSpeed = 6f;      // bullet velocity
+    public Transform firePoint;
+    public float fireRate = 1f;
+    public float bulletSpeed = 6f;
 
     private float fireCooldown = 0f;
 
@@ -26,7 +26,6 @@ public class Turret : MonoBehaviour
     {
         fireCooldown -= Time.deltaTime;
 
-        // Find closest target in range
         Transform target = GetClosestTarget();
 
         if (target != null)
@@ -67,7 +66,7 @@ public class Turret : MonoBehaviour
     private void AimAt(Transform target)
     {
         Vector3 dir = (target.position - headToRotate.position).normalized;
-        dir.y = 0f; // only rotate on Y so it doesn't tilt weirdly
+        dir.y = 0f;
 
         if (dir.sqrMagnitude < 0.0001f) return;
 
@@ -106,7 +105,6 @@ public class Turret : MonoBehaviour
 
     private void OnDrawGizmosSelected()
     {
-        // just to see range in editor
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(transform.position, range);
     }
