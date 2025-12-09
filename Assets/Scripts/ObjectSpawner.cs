@@ -53,6 +53,12 @@ public class ObjectSpawner : MonoBehaviour
         placeTurretText.SetActive(true);
     }
 
+    public void DisableTurretPlacement()
+    {
+        placingTurret = false;
+        placeTurretText.SetActive(false);
+    }
+
     private void PlaceBase()
     {
         if (placement == null) return;

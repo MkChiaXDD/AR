@@ -87,6 +87,8 @@ public class Turret : MonoBehaviour
             return;
         }
 
+        AudioManager.Instance.PlaySFX("TurretShoot");
+
         Vector3 dir = (target.position - firePoint.position).normalized;
 
         GameObject bulletGO = BulletPool.Instance.GetBullet(

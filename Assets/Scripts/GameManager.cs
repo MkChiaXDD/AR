@@ -231,7 +231,7 @@ public class GameManager : MonoBehaviour
 
     private void UpdateGoldCountText(int count)
     {
-        goldText.text = "Gold: " + count;
+        goldText.text = "" + count;
     }
 
     public void RestartGame()
