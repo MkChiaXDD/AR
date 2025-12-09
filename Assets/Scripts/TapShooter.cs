@@ -111,23 +111,28 @@ public class TapShooter : MonoBehaviour
     private bool TryCollectCoin(Vector2 screenPos)
     {
         Ray ray = arCamera.ScreenPointToRay(screenPos);
-        if (Physics.Raycast(ray, out RaycastHit hit, 2f)) // 2m range is enough for AR
+
+        // Hit EVERYTHING along the ray
+        RaycastHit[] hits = Physics.RaycastAll(ray, 10f);
+
+        foreach (var hit in hits)
         {
-            MobileDebug.Instance.Log("Ray hit: " + hit.collider.name);
-            if (hit.collider.CompareTag("Coin"))
+            // Debug to see what you're hitting
+            Debug.Log($"Raycast hit: {hit.collider.name}, tag: {hit.collider.tag}");
+
+            // Look specifically for the coin
+            if (hit.collider.CompareTag("Coin") ||
+                hit.collider.transform.root.CompareTag("Coin"))
             {
-                // Add gold
                 gameMgr.AddGold(1);
-
-                // Destroy or pool the coin
-                Destroy(hit.collider.gameObject);
-
-                //AudioManager.Instance.PlaySFX("CoinCollect");
-
-                return true;    // coin collected
+                Destroy(hit.collider.gameObject); // or .transform.root.gameObject
+                AudioManager.Instance.PlaySFX("CoinCollect");
+                return true;
             }
         }
-        return false; // no coin hit
+
+        return false;
     }
+
 
 }
