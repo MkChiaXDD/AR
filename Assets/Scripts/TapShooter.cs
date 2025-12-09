@@ -17,6 +17,7 @@ public class TapShooter : MonoBehaviour
 
     private int tapCount;
     public GameManager gameMgr;
+    public LayerMask coinLayerMask;
 
     private void Start()
     {
@@ -112,27 +113,19 @@ public class TapShooter : MonoBehaviour
     {
         Ray ray = arCamera.ScreenPointToRay(screenPos);
 
-        // Hit EVERYTHING along the ray
-        RaycastHit[] hits = Physics.RaycastAll(ray, 10f);
-
-        foreach (var hit in hits)
+        if (Physics.Raycast(ray, out RaycastHit hit, 10f, coinLayerMask))
         {
-            // Debug to see what you're hitting
-            Debug.Log($"Raycast hit: {hit.collider.name}, tag: {hit.collider.tag}");
+            MobileDebug.Instance.Log(hit.collider.name);
 
-            // Look specifically for the coin
-            if (hit.collider.CompareTag("Coin") ||
-                hit.collider.transform.root.CompareTag("Coin"))
-            {
-                gameMgr.AddGold(1);
-                Destroy(hit.collider.gameObject); // or .transform.root.gameObject
-                AudioManager.Instance.PlaySFX("CoinCollect");
-                return true;
-            }
+            gameMgr.AddGold(1);
+            Destroy(hit.collider.gameObject);
+            //AudioManager.Instance.PlaySFX("CoinCollect");
+            return true;
         }
 
         return false;
     }
+
 
 
 }

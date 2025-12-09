@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1630545893589167490}
   - component: {fileID: 5121605235721227114}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Coin
   m_TagString: Coin
   m_Icon: {fileID: 0}
@@ -118,6 +118,10 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -7731595313924556930, guid: 28865c5020a579142a19578d75faa12c, type: 3}
+      propertyPath: m_Layer
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: -848311768562009509, guid: 28865c5020a579142a19578d75faa12c, type: 3}
       propertyPath: m_LocalRotation.w
       value: 1
@@ -133,6 +137,10 @@ PrefabInstance:
     - target: {fileID: 919132149155446097, guid: 28865c5020a579142a19578d75faa12c, type: 3}
       propertyPath: m_Name
       value: coin
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: 28865c5020a579142a19578d75faa12c, type: 3}
+      propertyPath: m_Layer
+      value: 8
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects:
