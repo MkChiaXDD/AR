@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7860466215335027955}
   - component: {fileID: 5418638285299055532}
   - component: {fileID: 8331913306995864313}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Canvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -115,7 +115,7 @@ GameObject:
   - component: {fileID: 4211880170456713721}
   - component: {fileID: 4206061558541084010}
   - component: {fileID: 1595379684431709697}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -238,7 +238,7 @@ GameObject:
   - component: {fileID: 5876410300510886446}
   - component: {fileID: 8466027245004413213}
   - component: {fileID: 2148521353302444535}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Text (TMP)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -375,7 +375,7 @@ GameObject:
   - component: {fileID: 811404349186236321}
   - component: {fileID: 2031002896987983630}
   - component: {fileID: 8906759906841606030}
-  m_Layer: 5
+  m_Layer: 6
   m_Name: Image
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -518,9 +518,17 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: -603001920855709544, guid: ec3d6ad0d27fb9342ab51db0ee51f7b1, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
     - target: {fileID: 919132149155446097, guid: ec3d6ad0d27fb9342ab51db0ee51f7b1, type: 3}
       propertyPath: m_Name
       value: Haus
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: ec3d6ad0d27fb9342ab51db0ee51f7b1, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []

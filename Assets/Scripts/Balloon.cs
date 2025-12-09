@@ -52,7 +52,9 @@ public class Balloon : MonoBehaviour
 
     private void Die()
     {
+        ParticlePool.Instance.GetParticle(transform.position, Quaternion.identity);
         GameManager.Instance.OnBalloonPopped();
+        AudioManager.Instance.PlaySFX("BalloonPop");
         Destroy(gameObject);
     }
 

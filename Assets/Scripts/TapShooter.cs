@@ -73,6 +73,8 @@ public class TapShooter : MonoBehaviour
             return;
         }
 
+        AudioManager.Instance.PlaySFX("DartShoot");
+
         Vector3 spawnPos = arCamera.transform.position;
         Quaternion spawnRot = arCamera.transform.rotation;
 
