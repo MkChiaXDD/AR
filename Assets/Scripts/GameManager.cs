@@ -15,10 +15,9 @@ public class Round
     public float normalBalloonSpeed;
 
     [Header("Special Balloons")]
-    public int specialBalloonCount;   // set > 0 from round 3 onwards
+    public int specialBalloonCount;
     public float specialBalloonSpeed;
 }
-
 
 public class GameManager : MonoBehaviour
 {
@@ -68,6 +67,8 @@ public class GameManager : MonoBehaviour
 
     public bool gameEnd;
 
+    private Coroutine roundRoutine;
+
     private void Awake()
     {
         if (Instance != null && Instance != this)
@@ -77,35 +78,52 @@ public class GameManager : MonoBehaviour
         }
 
         Instance = this;
+        ResetState();
+    }
+
+    /// <summary>
+    /// Full reset of game state & UI. Called on startup and after scene reload.
+    /// </summary>
+    private void ResetState()
+    {
+        // core state
         gameEnd = false;
+        goldCount = 0;
         lives = maxLives;
+        balloonsAlive = 0;
+        currentRoundIndex = -1;
+        DefenseBase = null;
 
-        introPanel?.SetActive(true);
-        placeTurretText.SetActive(false);
-        placeBaseText?.SetActive(false);
+        // UI
+        if (introPanel) introPanel.SetActive(true);
+        if (placeBaseText) placeBaseText.SetActive(false);
+        if (tapToShootText) tapToShootText.SetActive(false);
+        if (placeTurretText) placeTurretText.SetActive(false);
+        if (winText) winText.SetActive(false);
+        if (loseText) loseText.SetActive(false);
+        if (restartBtn) restartBtn.SetActive(false);
 
-        tapToShootText.SetActive(false);
-        winText.SetActive(false);
-        loseText.SetActive(false);
-        restartBtn.SetActive(false);
-
+        // AR / placement
         if (planeManager) planeManager.enabled = false;
         if (placementMarker) placementMarker.enabled = false;
         if (objectSpawner) objectSpawner.enabled = false;
-    }
 
+        // text values
+        if (goldText) UpdateGoldCountText(goldCount);
+        if (balloonCountText) UpdateBalloonCountText(0);
+        if (roundText) UpdateRoundText(1);
+    }
 
     // Called from UI button
     public void OnStartScanning()
     {
-        introPanel?.SetActive(false);
-        placeBaseText?.SetActive(true);
+        if (introPanel) introPanel.SetActive(false);
+        if (placeBaseText) placeBaseText.SetActive(true);
 
         if (planeManager) planeManager.enabled = true;
         if (placementMarker) placementMarker.enabled = true;
         if (objectSpawner) objectSpawner.enabled = true;
     }
-
 
     // Called when the base is spawned
     public void SetDefenseBase(Transform baseTransform, Base baseScript)
@@ -113,8 +131,8 @@ public class GameManager : MonoBehaviour
         DefenseBase = baseTransform;
         baseScript.Init(maxLives);
 
-        placeBaseText?.SetActive(false);
-        tapToShootText.SetActive(true);
+        if (placeBaseText) placeBaseText.SetActive(false);
+        if (tapToShootText) tapToShootText.SetActive(true);
 
         StartGame();
     }
@@ -144,7 +162,11 @@ public class GameManager : MonoBehaviour
         }
 
         UpdateRoundText(rounds[currentRoundIndex].round);
-        StartCoroutine(SpawnRoundRoutine(rounds[currentRoundIndex]));
+
+        if (roundRoutine != null)
+            StopCoroutine(roundRoutine);
+
+        roundRoutine = StartCoroutine(SpawnRoundRoutine(rounds[currentRoundIndex]));
     }
 
     private IEnumerator SpawnRoundRoutine(Round roundData)
@@ -203,7 +225,9 @@ public class GameManager : MonoBehaviour
     // Balloon reached the base
     public void OnBalloonLeak()
     {
-        balloonsAlive--;
+        if (gameEnd) return;
+
+        balloonsAlive = Mathf.Max(0, balloonsAlive - 1);
         lives--;
 
         UpdateBalloonCountText(balloonsAlive);
@@ -216,8 +240,10 @@ public class GameManager : MonoBehaviour
     // Balloon popped by player
     public void OnBalloonPopped(int gold)
     {
-        balloonsAlive--;
-        goldCount+=gold;
+        if (gameEnd) return;
+
+        balloonsAlive = Mathf.Max(0, balloonsAlive - 1);
+        goldCount += gold;
 
         UpdateGoldCountText(goldCount);
         UpdateBalloonCountText(balloonsAlive);
@@ -225,36 +251,40 @@ public class GameManager : MonoBehaviour
 
     private void WinGame()
     {
-        winText.SetActive(true);
-        restartBtn.SetActive(true);
         gameEnd = true;
+        if (winText) winText.SetActive(true);
+        if (restartBtn) restartBtn.SetActive(true);
     }
 
     private void LoseGame()
     {
-        loseText.SetActive(true);
-        restartBtn.SetActive(true);
         gameEnd = true;
+        if (loseText) loseText.SetActive(true);
+        if (restartBtn) restartBtn.SetActive(true);
     }
 
     private void UpdateRoundText(int round)
     {
-        roundText.text = "Round: " + round + "/5";
+        if (roundText)
+            roundText.text = "Round: " + round + "/5";
     }
 
     private void UpdateBalloonCountText(int count)
     {
-        balloonCountText.text = "Enemies: " + count;
+        if (balloonCountText)
+            balloonCountText.text = "Enemies: " + count;
     }
 
     private void UpdateGoldCountText(int count)
     {
-        goldText.text = "" + count;
+        if (goldText)
+            goldText.text = "" + count;
     }
 
     public void RestartGame()
     {
-        SceneManager.LoadScene("GameScene");
+        // safest: reload current scene so everything (including AR stuff) is rebuilt
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public int GetGoldAmount()
