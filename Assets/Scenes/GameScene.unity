@@ -2300,6 +2300,9 @@ MonoBehaviour:
   fireRateText: {fileID: 1313475081}
   fireRateUpgradeCost: 3
   gameMgr: {fileID: 1701512716}
+  coinLayerMask:
+    serializedVersion: 2
+    m_Bits: 256
 --- !u!1 &680269971
 GameObject:
   m_ObjectHideFlags: 0
